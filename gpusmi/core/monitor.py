@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 
@@ -40,3 +39,23 @@ class Monitor:
     def power(self, device_id) -> int:
         raise NotImplementedError()
 
+
+def is_amd_gpu():
+    """Returns true if amdgpu is found in the list of initialized modules"""
+    import subprocess
+
+    driverInitialized = ""
+
+    try:
+        driverInitialized = str(
+            subprocess.check_output(
+                "cat /sys/module/amdgpu/initstate | grep live", shell=True
+            )
+        )
+    except subprocess.CalledProcessError:
+        pass
+
+    if len(driverInitialized) > 0:
+        return True
+
+    return False
