@@ -1,0 +1,3 @@
+[submodule "dependencies/rocm_smi_lib"]
+	path = dependencies/rocm_smi_lib
+	url = git@github.com:RadeonOpenCompute/rocm_smi_lib.git
