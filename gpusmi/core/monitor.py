@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from operator import truediv
 
 
 @dataclass
@@ -59,3 +60,26 @@ def is_amd_gpu():
         return True
 
     return False
+
+
+def is_nvidia_gpu():
+    return True
+
+
+MONITOR = None
+
+def monitor():
+    global MONITOR
+
+    if MONITOR is not None:
+        return MONITOR
+
+    if is_amd_gpu():
+        from gpusmi.plugins.amd import AMDMonitor
+        MONITOR = AMDMonitor()
+
+    elif is_nvidia_gpu():
+        from gpusmi.plugins.nvidia import NVMonitor
+        MONITOR = NVMonitor()
+
+    return MONITOR

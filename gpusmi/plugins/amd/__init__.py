@@ -16,8 +16,11 @@ from ctypes import c_uint64, c_uint32, byref, c_char_p, c_int64
 
 sys.path.insert(0, "/opt/rocm/rocm_smi/bindings/")
 
-
-from rsmiBindings import *
+IMPORT_ERROR = None
+try:
+    from rsmiBindings import *
+except ImportError as err:
+    IMPORT_ERROR = err
 
 
 RETCODE = 0
@@ -50,9 +53,9 @@ def rsmi_ret_ok(my_ret, device=None, metric=None, silent=False):
         if not PRINT_JSON:
             logging.debug('%s', returnString)
 
-            if not silent:
-                # if my_ret in rsmi_status_verbose_err_out:
-                #    printLog(device, rsmi_status_verbose_err_out[my_ret], None)
+            # if not silent:
+            #     if my_ret in rsmi_status_verbose_err_out:
+            #        printLog(device, rsmi_status_verbose_err_out[my_ret], None)
 
         RETCODE = my_ret
         return False
@@ -63,6 +66,11 @@ class AMDMonitor(Monitor):
 
     def __init__(self) -> None:
         super().__init__()
+
+        if IMPORT_ERROR is not None:
+            raise IMPORT_ERROR
+
+        self.noop = False
         ret_init = rocmsmi.rsmi_init(0)
 
     def close(self):

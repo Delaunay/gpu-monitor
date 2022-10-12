@@ -11,8 +11,7 @@ with open("gpusmi/core/__init__.py") as file:
             break
 
 assert (
-    os.path.exists(os.path.join("gpusmi", "__init__.py"))
-    is False
+    os.path.exists(os.path.join("gpusmi", "__init__.py")) is False
 ), "gpusmi is a namespace not a module"
 
 extra_requires = {"plugins": ["importlib_resources"]}
@@ -38,7 +37,9 @@ if __name__ == "__main__":
         ],
         packages=[
             "gpusmi.core",
-            "gpusmi.plugins.example",
+            "gpusmi.testing",
+            "gpusmi.plugins.amd",
+            "gpusmi.plugins.nvidia",
         ],
         setup_requires=["setuptools"],
         install_requires=["importlib_resources"],
